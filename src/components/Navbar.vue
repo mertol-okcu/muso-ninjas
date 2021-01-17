@@ -6,16 +6,24 @@
         <router-link :to="{ name: 'Home' }">Muso Ninjas</router-link>
       </h1>
       <div class="links">
-        <a v-if="user" @click="handleClick" class="btn">Log out</a>
-        <router-link v-if="user" class="btn" :to="{ name: 'CreatePlaylist' }"
-          >Create playlist</router-link
-        >
-        <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
-          >Sign up</router-link
-        >
-        <router-link v-if="!user" class="btn" :to="{ name: 'Login' }"
-          >Log in</router-link
-        >
+        <div v-if="user">
+          <router-link class="btn" :to="{ name: 'UserPlaylists' }"
+            >My playlists</router-link
+          >
+          <router-link class="btn" :to="{ name: 'CreatePlaylist' }"
+            >Create playlist</router-link
+          >
+          <span>Hi there, {{ user.displayName }}</span>
+          <a @click="handleClick" class="btn">Log out</a>
+        </div>
+        <div v-else>
+          <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
+            >Sign up</router-link
+          >
+          <router-link v-if="!user" class="btn" :to="{ name: 'Login' }"
+            >Log in</router-link
+          >
+        </div>
       </div>
     </nav>
   </div>
@@ -71,5 +79,12 @@ button {
 }
 nav img {
   max-height: 60px;
+}
+span {
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--primary);
 }
 </style>

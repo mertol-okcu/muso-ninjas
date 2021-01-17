@@ -29,7 +29,7 @@
           Delete song
         </button>
       </div>
-      <AddSong :playlist="playlist" />
+      <AddSong v-if="ownership" :playlist="playlist" />
     </div>
   </div>
 </template>
