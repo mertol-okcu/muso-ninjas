@@ -12,17 +12,30 @@
       <button v-if="ownership && !isPending" @click="handleDelete">
         Delete playlist
       </button>
-      <button v-if="isPending" disabled>Deleting...</button>
+      <button v-if="ownership && isPending" disabled>Deleting...</button>
     </div>
 
     <!-- song list -->
     <div class="song-list">
-      <p>song list here</p>
+      <div v-if="!playlist.songs.length">
+        No songs have been added to this playlist yet
+      </div>
+      <div v-for="song in playlist.songs" :key="song.id" class="single-song">
+        <div class="details">
+          <h3>{{ song.title }}</h3>
+          <p>{{ song.artist }}</p>
+        </div>
+        <button v-if="ownership" @click="handleDeleteSong(song.id)">
+          Delete song
+        </button>
+      </div>
+      <AddSong :playlist="playlist" />
     </div>
   </div>
 </template>
 
 <script>
+import AddSong from "@/components/AddSong";
 import useStorage from "@/composables/useStorage";
 import useDocument from "@/composables/useDocument";
 import getDocument from "@/composables/getDocument";
@@ -32,14 +45,21 @@ import { useRouter } from "vue-router";
 
 export default {
   props: ["id"],
+  components: { AddSong },
   setup(props) {
     const { document: playlist, error } = getDocument("playlists", props.id);
     const { user } = getUser();
-    const { deleteDoc } = useDocument("playlists", props.id);
+    const { deleteDoc, updateDoc } = useDocument("playlists", props.id);
     const { deleteImage } = useStorage();
     const router = useRouter();
 
     const isPending = ref(false);
+
+    const ownership = computed(() => {
+      return (
+        playlist.value && user.value && user.value.uid == playlist.value.userId
+      );
+    });
 
     const handleDelete = async () => {
       isPending.value = true;
@@ -49,13 +69,23 @@ export default {
       router.push({ name: "Home" });
     };
 
-    const ownership = computed(() => {
-      return (
-        playlist.value && user.value && user.value.uid == playlist.value.userId
-      );
-    });
+    const handleDeleteSong = async (id) => {
+      const newSongsList = playlist.value.songs.filter((song) => {
+        return song.id !== id;
+      });
+      const res = await updateDoc({
+        songs: newSongsList,
+      });
+    };
 
-    return { playlist, error, ownership, handleDelete, isPending };
+    return {
+      playlist,
+      error,
+      ownership,
+      handleDelete,
+      handleDeleteSong,
+      isPending,
+    };
   },
 };
 </script>
@@ -96,5 +126,13 @@ export default {
 }
 .description {
   text-align: left;
+}
+.single-song {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--secondary);
+  margin-bottom: 20px;
 }
 </style>
