@@ -58,8 +58,6 @@ export default {
             name: "PlaylistDetails",
             params: { id: res.id },
           });
-        } else {
-          // TODO: If addDoc unsuccesfull, delete the uploaded image
         }
       }
     };
