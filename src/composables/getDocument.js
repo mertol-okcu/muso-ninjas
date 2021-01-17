@@ -9,7 +9,7 @@ const getDocument = (collection, id) => {
 
   const unsub = documentRef.onSnapshot(
     (doc) => {
-      console.log("snapshot document");
+      //console.log("snapshot document");
       if (doc.data() && doc.data().createdAt) {
         document.value = { ...doc.data(), id: doc.id };
         error.value = null;
@@ -18,7 +18,7 @@ const getDocument = (collection, id) => {
       }
     },
     (err) => {
-      console.log(err.message);
+      //console.log(err.message);
       document.value = null;
       error.value = "could not fetch data";
     }

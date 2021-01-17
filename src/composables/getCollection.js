@@ -15,7 +15,7 @@ const getCollection = (collection, query) => {
 
   const unsub = collectionRef.onSnapshot(
     (snap) => {
-      console.log("snapshot");
+      //console.log("snapshot");
       let results = [];
       snap.docs.forEach((doc) => {
         doc.data().createdAt && results.push({ ...doc.data(), id: doc.id });
@@ -24,7 +24,7 @@ const getCollection = (collection, query) => {
       error.value = null;
     },
     (err) => {
-      console.log(err.message);
+      //console.log(err.message);
       documents.value = null;
       error.value = "could not fetch data";
     }
