@@ -14,7 +14,7 @@ const useCollection = (collection) => {
       isPending.value = false;
     } catch (err) {
       console.log(err.message);
-      error.value = "could not send the message";
+      error.value = "Could not upload info";
       isPending.value = false;
     }
   };

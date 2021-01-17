@@ -7,6 +7,9 @@
       </h1>
       <div class="links">
         <button v-if="user" @click="handleClick">Log out</button>
+        <router-link v-if="user" class="btn" :to="{ name: 'CreatePlaylist' }"
+          >Create playlist</router-link
+        >
         <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
           >Sign up</router-link
         >
@@ -47,6 +50,7 @@ export default {
   padding: 16px 10px;
   margin-bottom: 60px;
   background: white;
+  box-shadow: 0px 0px 4px rgba(50, 50, 50, 0.1);
 }
 nav {
   display: flex;
